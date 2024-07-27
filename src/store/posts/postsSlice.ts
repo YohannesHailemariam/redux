@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-export type Post = {
-    id: number;
-    title: string;
-}
+import { Post } from "../../utils/types";
 
 export interface PostsState {
     posts: Post[];
