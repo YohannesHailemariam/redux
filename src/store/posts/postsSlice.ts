@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Post } from "../../utils/types";
+import { fetchPostsThunk } from "./postsThunk";
 
 export interface PostsState {
     posts: Post[];
@@ -14,8 +15,11 @@ const initialState: PostsState = {
 export const postsSlice = createSlice({
     name: 'posts',
     initialState,
-    reducers: {
-
+    reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(fetchPostsThunk.fulfilled, (state, action) => {
+            console.log('fetchPostsThunk.fulfilled');
+        });
     }
 })
 
