@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Post } from "../../utils/types";
 import { fetchPostsThunk } from "./postsThunk";
 
@@ -15,13 +15,27 @@ const initialState: PostsState = {
 export const postsSlice = createSlice({
     name: 'posts',
     initialState,
-    reducers: {},
+    reducers: {
+        setLoading: (state, action: PayloadAction<boolean>) => {
+            state.loading = action.payload;
+        }
+    },
     extraReducers: (builder) => {
-        builder.addCase(fetchPostsThunk.fulfilled, (state, action) => {
+        builder
+        .addCase(fetchPostsThunk.pending, (state) => {
+            state.loading = true;
+        })
+        .addCase(fetchPostsThunk.fulfilled, (state, action) => {
             console.log('fetchPostsThunk.fulfilled');
+            console.log(action.payload.data);
+            state.posts = action.payload.data;
+            state.loading = false;
+        })
+        .addCase(fetchPostsThunk.rejected, (state) => {
+            state.loading = false;
         });
     }
 })
 
-export const { } = postsSlice.actions;
+export const { setLoading } = postsSlice.actions;
 export default postsSlice.reducer;
